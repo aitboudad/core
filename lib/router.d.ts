@@ -1,0 +1,85 @@
+/** @coreapi @module core */ /** */
+import { UrlMatcherFactory } from "./url/urlMatcherFactory";
+import { UrlRouterProvider } from "./url/urlRouter";
+import { UrlRouter } from "./url/urlRouter";
+import { TransitionService } from "./transition/transitionService";
+import { ViewService } from "./view/view";
+import { StateRegistry } from "./state/stateRegistry";
+import { StateService } from "./state/stateService";
+import { UIRouterGlobals } from "./globals";
+import { UIRouterPlugin } from "./interface";
+/**
+ * The master class used to instantiate an instance of UI-Router.
+ *
+ * UI-Router (for a specific framework) will create an instance of this class during bootstrap.
+ * This class instantiates and wires the UI-Router services together.
+ *
+ * After a new instance of the UIRouter class is created, it should be configured for your app.
+ * For instance, app states should be registered with the [[stateRegistry]].
+ *
+ * Tell UI-Router to monitor the URL by calling `uiRouter.urlRouter.listen()` ([[UrlRouter.listen]])
+ */
+export declare class UIRouter {
+    viewService: ViewService;
+    transitionService: TransitionService;
+    globals: UIRouterGlobals;
+    urlMatcherFactory: UrlMatcherFactory;
+    urlRouterProvider: UrlRouterProvider;
+    urlRouter: UrlRouter;
+    stateRegistry: StateRegistry;
+    stateService: StateService;
+    constructor();
+    private _plugins;
+    /**
+     * Adds a plugin to UI-Router
+     *
+     * This method adds a UI-Router Plugin.
+     * A plugin can enhance or change UI-Router behavior using any public API.
+     *
+     * #### Example:
+     * ```js
+     * import { MyCoolPlugin } from "ui-router-cool-plugin";
+     *
+     * var plugin = router.addPlugin(MyCoolPlugin);
+     * ```
+     *
+     * ### Plugin authoring
+     *
+     * A plugin is simply a class (or constructor function) which accepts a [[UIRouter]] instance and (optionally) an options object.
+     *
+     * The plugin can implement its functionality using any of the public APIs of [[UIRouter]].
+     * For example, it may configure router options or add a Transition Hook.
+     *
+     * The plugin can then be published as a separate module.
+     *
+     * #### Example:
+     * ```js
+     * export class MyAuthPlugin {
+     *   constructor(router: UIRouter, options: any) {
+     *     let $transitions = router.transitionService;
+     *     let $state = router.stateService;
+     *
+     *     let authCriteria = {
+     *       to: (state) => state.data && state.data.requiresAuth
+     *     };
+     *
+     *     function authHook(transition: Transition) {
+     *       let authService = transition.injector().get('AuthService');
+     *       if (!authService.isAuthenticated()) {
+     *         return $state.target('login');
+     *       }
+     *     }
+     *
+     *     $transitions.onStart(authCriteria, authHook);
+     *   }
+     * }
+     * ```
+     *
+     * @param pluginFactory a function which accepts a [[UIRouter]] instance and returns a UI-Router Plugin instance
+     * @param options options to pass to the plugin
+     * @returns {T}
+     */
+    plugin<T extends UIRouterPlugin>(pluginFactory: PluginFactory<T>, options?: any): T;
+    getPlugin(pluginName: string): UIRouterPlugin;
+}
+export declare type PluginFactory<T> = (router: UIRouter, options?: any) => T;
