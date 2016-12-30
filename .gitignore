@@ -9,7 +9,6 @@ yarn.lock
 *~
 node_modules
 bower_components
-lib
 lib-esm
 
 # webstorm files

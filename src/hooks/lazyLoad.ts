@@ -31,6 +31,7 @@ import {services} from "../common/coreservices";
  * See [[StateDeclaration.lazyLoad]]
  */
 const lazyLoadHook: TransitionHookFn = (transition: Transition) => {
+  const lazyStates = transition.entering().filter((state) => !!state.lazyLoad).map(state => state.name);
   const transitionSource = (trans: Transition) =>
       trans.redirectedFrom() ? transitionSource(trans.redirectedFrom()) : trans.options().source;
 
@@ -47,7 +48,8 @@ const lazyLoadHook: TransitionHookFn = (transition: Transition) => {
       let matches = transition.router.stateRegistry.get()
           .map(s => s.$$state())
           .map(matchState)
-          .filter(([state, params]) => !!params);
+          .filter(([state, params]) => !!params)
+          .filter(([state, params]) => lazyStates.some(lazyState => !!state.name.match(lazyState.replace('.**', '.*'))));
 
       if (matches.length) {
         let [state, params] = matches[0];
