@@ -15,4 +15,4 @@ function addCoreResolvables(trans: Transition) {
 }
 
 export const registerAddCoreResolvables = (transitionService: TransitionService) =>
-    transitionService.onCreate({}, addCoreResolvables);
+    transitionService['onCreate']({}, addCoreResolvables);

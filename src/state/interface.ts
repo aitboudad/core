@@ -395,14 +395,14 @@ export interface StateDeclaration {
    * ```js
    * views: {
    *   header: {
-   *     controller: "headerCtrl",
-   *     templateUrl: "header.html"
+   *     "controller": "headerCtrl",
+   *     "templateUrl": "header.html"
    *   }, body: {
-   *     controller: "bodyCtrl",
-   *     templateUrl: "body.html"
+   *     "controller": "bodyCtrl",
+   *     "templateUrl": "body.html"
    *   }, footer: {
-   *     controller: "footCtrl",
-   *     templateUrl: "footer.html"
+   *     "controller": "footCtrl",
+   *     "templateUrl": "footer.html"
    *   }
    * }
    * ```
@@ -413,11 +413,11 @@ export interface StateDeclaration {
    * // named `ui-view="body" from parent state's template.
    * views: {
    *   'header@top': {
-   *     controller: "msgHeaderCtrl",
-   *     templateUrl: "msgHeader.html"
+   *     "controller": "msgHeaderCtrl",
+   *     "templateUrl": "msgHeader.html"
    *   }, 'body': {
-   *     controller: "messagesCtrl",
-   *     templateUrl: "messages.html"
+   *     "controller": "messagesCtrl",
+   *     "templateUrl": "messages.html"
    *   }
    * }
    * ```

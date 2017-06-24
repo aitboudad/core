@@ -7,6 +7,19 @@ import {Param} from "../params/param";
 import {Resolvable} from "../resolve/resolvable";
 import {ViewConfig} from "../view/interface";
 
+export declare interface IPathNode {
+  /** The state being entered, exited, or retained */
+  state: StateObject;
+  /** The parameters declared on the state */
+  paramSchema: Param[];
+  /** The parameter values that belong to the state */
+  paramValues: { [key: string]: any };
+  /** The individual (stateful) resolvable objects that belong to the state */
+  resolvables: Resolvable[];
+  /** The state's declared view configuration objects */
+  views: ViewConfig[];
+}
+
 /**
  * @internalapi
  *
@@ -16,7 +29,7 @@ import {ViewConfig} from "../view/interface";
  * Each PathNode corresponds to a state being entered, exited, or retained.
  * The stateful information includes parameter values and resolve data.
  */
-export class PathNode {
+export class PathNode implements IPathNode {
   /** The state being entered, exited, or retained */
   public state: StateObject;
   /** The parameters declared on the state */

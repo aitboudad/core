@@ -134,11 +134,11 @@ export class StateObject {
 
   /** Predicate which returns true if the object is an class with @State() decorator */
   static isStateClass = (stateDecl: _StateDeclaration): stateDecl is ({ new (): StateDeclaration }) =>
-      isFunction(stateDecl) && stateDecl['__uiRouterState'] === true;
+      isFunction(stateDecl) && (stateDecl as any).__uiRouterState === true;
 
   /** Predicate which returns true if the object is an internal [[StateObject]] object */
   static isState = (obj: any): obj is StateObject =>
-      isObject(obj['__stateObjectCache']);
+      isObject(obj.__stateObjectCache);
 
   /**
    * Returns true if the provided parameter is the same state.

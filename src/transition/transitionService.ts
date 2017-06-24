@@ -53,7 +53,7 @@ export let defaultTransOpts: TransitionOptions = {
  * Plugin API for Transition Service
  * @internalapi
  */
-export interface TransitionServicePluginAPI {
+export declare interface TransitionServicePluginAPI {
   /**
    * Adds a Path to be used as a criterion against a TreeChanges path
    *
@@ -104,7 +104,7 @@ export interface TransitionServicePluginAPI {
  *
  * At bootstrap, [[UIRouter]] creates a single instance (singleton) of this class.
  */
-export class TransitionService implements IHookRegistry, Disposable {
+export class TransitionService implements TransitionServicePluginAPI, IHookRegistry, Disposable {
   /** @hidden */
   _transitionCount = 0;
 
@@ -280,7 +280,7 @@ export class TransitionService implements IHookRegistry, Disposable {
   };
 
   /** @hidden */
-  private _getEvents(phase?: TransitionHookPhase): TransitionEventType[] {
+  _getEvents(phase?: TransitionHookPhase): TransitionEventType[] {
     let transitionHookTypes = isDefined(phase) ?
         this._eventTypes.filter(type => type.hookPhase === phase) :
         this._eventTypes.slice();
@@ -304,17 +304,17 @@ export class TransitionService implements IHookRegistry, Disposable {
    *
    * @hidden
    */
-  private _definePathType(name: string, hookScope: TransitionHookScope) {
+  _definePathType(name: string, hookScope: TransitionHookScope) {
     this._criteriaPaths[name] = { name, scope: hookScope };
   }
 
   /** * @hidden */
-  private _getPathTypes(): PathTypes {
+  _getPathTypes(): PathTypes {
     return this._criteriaPaths;
   }
 
   /** @hidden */
-  public getHooks(hookName: string): RegisteredHook[] {
+  getHooks(hookName: string): RegisteredHook[] {
     return this._registeredHooks[hookName];
   }
 

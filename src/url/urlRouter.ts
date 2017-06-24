@@ -24,7 +24,7 @@ function appendBasePath(url: string, isHtml5: boolean, absolute: boolean, baseHr
 }
 
 /** @hidden */
-const getMatcher = prop("urlMatcher");
+const getMatcher = o => o && o.urlMatcher;
 
 /**
  * Default rule priority sorting function.
@@ -40,10 +40,10 @@ const getMatcher = prop("urlMatcher");
  */
 let defaultRuleSortFn: (a: UrlRule, b: UrlRule) => number;
 defaultRuleSortFn = composeSort(
-    sortBy(pipe(prop("priority"), x => -x)),
-    sortBy(pipe(prop("type"), type => ({ "STATE": 4, "URLMATCHER": 4, "REGEXP": 3, "RAW": 2, "OTHER": 1 })[type])),
+    sortBy(pipe(o => o && o.priority, x => -x)),
+    sortBy(pipe(o => o && o.type, type => ({ "STATE": 4, "URLMATCHER": 4, "REGEXP": 3, "RAW": 2, "OTHER": 1 })[type])),
     (a, b) => (getMatcher(a) && getMatcher(b)) ? UrlMatcher.compare(getMatcher(a), getMatcher(b)) : 0,
-    sortBy(prop("$id"), inArray([ "REGEXP", "RAW", "OTHER" ])),
+    sortBy(o => o && o.$id, inArray([ "REGEXP", "RAW", "OTHER" ])),
 );
 
 /**

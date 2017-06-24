@@ -639,7 +639,7 @@ export type sortfn = (a: any, b: any) => number;
  * #### Example:
  * This example uses [[prop]]
  * ```js
- * var sortfn = sortBy(prop('priority'))
+ * var sortfn = sortBy(o => o && o.priority)
  * ```
  *
  * The `checkFn` can be used to exclude objects from sorting.
@@ -647,7 +647,7 @@ export type sortfn = (a: any, b: any) => number;
  * #### Example:
  * This example only sorts objects with type === 'FOO'
  * ```js
- * var sortfn = sortBy(prop('priority'), propEq('type', 'FOO'))
+ * var sortfn = sortBy(o => o && o.priority, propEq('type', 'FOO'))
  * ```
  *
  * @param propFn a function that returns the property (as a number)

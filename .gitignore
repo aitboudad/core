@@ -21,3 +21,5 @@ idea-out
 
 # generate doc to _doc; copy to proper gh-pages dir
 _doc
+.ng_build
+dist

@@ -32,7 +32,7 @@ export class UrlRuleFactory {
   }
 
   static isUrlRule = obj =>
-      obj && ['type', 'match', 'handler'].every(key => isDefined(obj[key]));
+      obj && isDefined(obj.type) && isDefined(obj.match) && isDefined(obj.handler);
 
   create(what: string|UrlMatcher|StateObject|RegExp|UrlRuleMatchFn, handler?: string|UrlRuleHandlerFn): UrlRule {
     const makeRule = pattern([

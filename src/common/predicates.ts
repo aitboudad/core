@@ -44,5 +44,5 @@ export function isInjectable(val: any) {
  *
  * It is probably a Promise if it's an object, and it has a `then` property which is a Function
  */
-export const isPromise = <(x: any) => x is Promise<any>> and(isObject, pipe(prop('then'), isFunction));
+export const isPromise = <(x: any) => x is Promise<any>> and(isObject, pipe(o => o && o.then, isFunction));
 

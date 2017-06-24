@@ -32,7 +32,7 @@ import { RawParams } from '../params/interface';
 import { ResolvableLiteral } from '../resolve/interface';
 
 /** @hidden */
-const stateSelf: (_state: StateObject) => StateDeclaration = prop("self");
+const stateSelf: (_state: StateObject) => StateDeclaration = o => o && o.self;
 
 /**
  * Represents a transition between two states.
@@ -250,7 +250,7 @@ export class Transition implements IHookRegistry {
   params(pathname?: string): any;
   params<T>(pathname?: string): T;
   params(pathname: string = "to") {
-    return Object.freeze(this._treeChanges[pathname].map(prop("paramValues")).reduce(mergeR, {}));
+    return Object.freeze(this._treeChanges[pathname].map(o => o && o.paramValues).reduce(mergeR, {}));
   }
 
 
@@ -445,7 +445,7 @@ export class Transition implements IHookRegistry {
    * @returns an array of states that will be entered during this transition.
    */
   entering(): StateDeclaration[] {
-    return map(this._treeChanges.entering, prop('state')).map(stateSelf);
+    return map(this._treeChanges.entering, o => o && o.state).map(stateSelf);
   }
 
   /**
@@ -454,7 +454,7 @@ export class Transition implements IHookRegistry {
    * @returns an array of states that will be exited during this transition.
    */
   exiting(): StateDeclaration[] {
-    return map(this._treeChanges.exiting, prop('state')).map(stateSelf).reverse();
+    return map(this._treeChanges.exiting, o => o && o.state).map(stateSelf).reverse();
   }
 
   /**
@@ -464,7 +464,7 @@ export class Transition implements IHookRegistry {
    *    exited during this Transition
    */
   retained(): StateDeclaration[] {
-    return map(this._treeChanges.retained, prop('state')).map(stateSelf);
+    return map(this._treeChanges.retained, o => o && o.state).map(stateSelf);
   }
 
   /**
@@ -482,7 +482,7 @@ export class Transition implements IHookRegistry {
   views(pathname: string = "entering", state?: StateObject): ViewConfig[] {
     let path = this._treeChanges[pathname];
     path = !state ? path : path.filter(propEq('state', state));
-    return path.map(prop("views")).filter(identity).reduce(unnestR, []);
+    return path.map(o => o && o.views).filter(identity).reduce(unnestR, []);
   }
 
   /**
@@ -753,7 +753,7 @@ export class Transition implements IHookRegistry {
     // (X) means the to state is invalid.
     let id = this.$id,
         from = isObject(fromStateOrName) ? fromStateOrName.name : fromStateOrName,
-        fromParams = toJson(avoidEmptyHash(this._treeChanges.from.map(prop('paramValues')).reduce(mergeR, {}))),
+        fromParams = toJson(avoidEmptyHash(this._treeChanges.from.map(o => o && o.paramValues).reduce(mergeR, {}))),
         toValid = this.valid() ? "" : "(X) ",
         to = isObject(toStateOrName) ? toStateOrName.name : toStateOrName,
         toParams = toJson(avoidEmptyHash(this.params()));

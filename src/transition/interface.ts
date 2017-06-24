@@ -119,7 +119,7 @@ export interface TransitionHookOptions {
  *
  * @todo show visual state tree
  */
-export interface TreeChanges {
+export declare interface TreeChanges {
   /** @nodoc */
   [key: string]: PathNode[];
 
@@ -269,7 +269,7 @@ export interface HookRegOptions {
  * [[TransitionService]] and also the [[Transition]] object itself implement this interface.
  * Note: the Transition object only allows hooks to be registered before the Transition is started.
  */
-export interface IHookRegistry {
+export declare interface IHookRegistry {
   /**
    * Registers a [[TransitionHookFn]], called *before a transition starts*.
    *
@@ -788,7 +788,7 @@ export interface RegisteredHooks {
 }
 
 /** @hidden */
-export interface PathTypes {
+export declare interface PathTypes {
   [key: string]: PathType;
 
   to: PathType;

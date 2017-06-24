@@ -23,8 +23,8 @@ const redirectToHook: TransitionHookFn = (trans: Transition) => {
     if (!result) return;
     if (result instanceof TargetState) return result;
     if (isString(result)) return $state.target(<any> result, trans.params(), trans.options());
-    if (result['state'] || result['params'])
-      return $state.target(result['state'] || trans.to(), result['params'] || trans.params(), trans.options());
+    if (result.state || result.params)
+      return $state.target(result.state || trans.to(), result.params || trans.params(), trans.options());
   }
 
   if (isFunction(redirect)) {

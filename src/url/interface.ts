@@ -45,7 +45,7 @@ export interface ParamFactory {
  */
 export interface UrlConfigApi extends LocationConfig, UrlMatcherConfig {}
 
-export interface UrlMatcherConfig {
+export declare interface UrlMatcherConfig {
   /**
    * Defines whether URL matching should be case sensitive (the default behavior), or not.
    *
@@ -121,7 +121,7 @@ export interface UrlMatcherConfig {
 }
 
 /** @internalapi */
-export interface UrlSyncApi {
+export declare interface UrlSyncApi {
   /**
    * Checks the URL for a matching [[UrlRule]]
    *
@@ -201,7 +201,7 @@ export interface UrlSyncApi {
  *
  * The most commonly used methods are [[otherwise]] and [[when]].
  */
-export interface UrlRulesApi {
+export declare interface UrlRulesApi {
   /**
    * Defines URL Rule priorities
    *

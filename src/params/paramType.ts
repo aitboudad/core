@@ -135,11 +135,15 @@ function ArrayType(type: ParamType, mode: (boolean|"auto")) {
       return true;
     };
   }
-
-  ['encode', 'decode', 'equals', '$normalize'].forEach(name => {
+  
+  Object.keys({ encode: '', decode: '', $normalize: '' }).forEach(name => {
     var paramTypeFn = type[name].bind(type);
-    var wrapperFn: Function = name === 'equals' ? arrayEqualsHandler : arrayHandler;
-    this[name] = wrapperFn(paramTypeFn);
+    this[name] = arrayHandler(paramTypeFn);
+  });
+
+  Object.keys({ equals: '' }).forEach(name => {
+    var paramTypeFn = type[name].bind(type);
+    this[name] = arrayEqualsHandler(paramTypeFn);
   });
 
   extend(this, {

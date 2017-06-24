@@ -46,7 +46,7 @@ export interface CoreServices {
   $injector: $InjectorLike;
 }
 
-export interface LocationServices extends Disposable {
+export declare interface LocationServices extends Disposable {
   /**
    * Gets the current url string
    *
@@ -149,7 +149,7 @@ export interface LocationServices extends Disposable {
  * This service returns information about the location configuration.
  * This service is primarily used when building URLs (e.g., for `hrefs`)
  */
-export interface LocationConfig extends Disposable {
+export declare interface LocationConfig extends Disposable {
   /**
    * Gets the port, e.g., `80`
    *

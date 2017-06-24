@@ -70,8 +70,10 @@ export class StateService {
 
   /** @internalapi */
   constructor(private router: UIRouter) {
-    let getters = ['current', '$current', 'params', 'transition'];
-    let boundFns = Object.keys(StateService.prototype).filter(not(inArray(getters)));
+    let boundFns = Object.keys(StateService.prototype).filter(
+      // exclude getters
+      p => !(Object.getOwnPropertyDescriptor(StateService.prototype, p) || {}).get,
+    );
     createProxyFunctions(val(StateService.prototype), this, val(this), boundFns);
   }
 

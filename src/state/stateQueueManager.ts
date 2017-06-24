@@ -36,7 +36,7 @@ export class StateQueueManager implements Disposable {
     let name = state.name;
 
     if (!isString(name)) throw new Error("State must have a valid name");
-    if (this.states.hasOwnProperty(name) || inArray(queue.map(prop('name')), name))
+    if (this.states.hasOwnProperty(name) || inArray(queue.map(o => o && o.name), name))
       throw new Error(`State '${name}' is already defined`);
 
     queue.push(state);

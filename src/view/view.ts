@@ -254,7 +254,7 @@ export class ViewService {
    * @return {Array} Returns an array of fully-qualified view names.
    */
   available() {
-    return this._uiViews.map(prop("fqn"));
+    return this._uiViews.map(o => o && o.fqn);
   }
 
   /**
@@ -263,7 +263,7 @@ export class ViewService {
    * @return {Array} Returns an array of fully-qualified view names.
    */
   active() {
-    return this._uiViews.filter(prop("$config")).map(prop("name"));
+    return this._uiViews.filter((o: any) => o && o.$config).map(o => o && o.name);
   }
 
   /**

@@ -40,7 +40,7 @@ const memoizeTo = (obj: Obj, prop: string, fn: Function) =>
 const splitOnSlash = splitOnDelim('/');
 
 /** @hidden */
-interface UrlMatcherCache {
+export interface UrlMatcherCache {
   segments?: any[];
   weights?: number[];
   path?: UrlMatcher[];
@@ -99,20 +99,36 @@ interface UrlMatcherCache {
  *   in the built-in  `date` ParamType matches `2014-11-12`) and provides a Date object in $stateParams.start
  *
  */
-export class UrlMatcher {
+export declare interface IUrlMatcher {
+  /** @hidden */
+  _cache: UrlMatcherCache;
+  /** @hidden */
+  _children: UrlMatcher[];
+  /** @hidden */
+  _params: Param[];
+  /** @hidden */
+  _segments: string[];
+  /** @hidden */
+  _compiled: string[];
+
+  /** The pattern that was passed into the constructor */
+  pattern: string;
+}
+
+export class UrlMatcher implements IUrlMatcher {
   /** @hidden */
   static nameValidator: RegExp = /^\w+([-.]+\w+)*(?:\[\])?$/;
 
   /** @hidden */
-  private _cache: UrlMatcherCache = { path: [this] };
+  _cache: UrlMatcherCache = { path: [this] };
   /** @hidden */
-  private _children: UrlMatcher[] = [];
+  _children: UrlMatcher[] = [];
   /** @hidden */
-  private _params:   Param[]      = [];
+  _params:   Param[]      = [];
   /** @hidden */
-  private _segments: string[]     = [];
+  _segments: string[]     = [];
   /** @hidden */
-  private _compiled: string[]     = [];
+  _compiled: string[]     = [];
 
   /** The pattern that was passed into the constructor */
   public pattern: string;
@@ -270,7 +286,7 @@ export class UrlMatcher {
     let match = memoizeTo(this._cache, 'pattern', () => {
       return new RegExp([
         '^',
-        unnest(this._cache.path.map(prop('_compiled'))).join(''),
+        unnest(this._cache.path.map(o => o && o._compiled)).join(''),
         this.config.strict === false ? '\/?' : '',
         '$'
       ].join(''), this.config.caseInsensitive ? 'i' : undefined);

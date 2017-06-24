@@ -88,7 +88,7 @@ const getParamsBuilder = (paramFactory: ParamFactory) =>
 function paramsBuilder(state: StateObject): { [key: string]: Param } {
   const makeConfigParam = (config: any, id: string) => paramFactory.fromConfig(id, null, config);
   let urlParams: Param[] = (state.url && state.url.parameters({inherit: false})) || [];
-  let nonUrlParams: Param[] = values(mapObj(omit(state.params || {}, urlParams.map(prop('id'))), makeConfigParam));
+  let nonUrlParams: Param[] = values(mapObj(omit(state.params || {}, urlParams.map(o => o && o.id)), makeConfigParam));
   return urlParams.concat(nonUrlParams).map(p => [p.id, p]).reduce(applyPairs, {});
 };
 
@@ -156,7 +156,7 @@ export function resolvablesBuilder(state: StateObject): Resolvable[] {
     // ng1 doesn't have an $injector until runtime.
     // If the $injector doesn't exist, use "deferred" literal as a
     // marker indicating they should be annotated when runtime starts
-    return fn['$inject'] || ($injector && $injector.annotate(fn, $injector.strictDi)) || <any> "deferred";
+    return (fn as any).$inject || ($injector && $injector.annotate(fn, $injector.strictDi)) || <any> "deferred";
   };
 
   /** true if the object has both `token` and `resolveFn`, and is probably a [[ResolveLiteral]] */
@@ -173,17 +173,17 @@ export function resolvablesBuilder(state: StateObject): Resolvable[] {
 
   /** Given a literal resolve or provider object, returns a Resolvable */
   const literal2Resolvable = pattern([
-    [prop('resolveFn'),   p => new Resolvable(token(p), p.resolveFn, p.deps, p.policy)],
-    [prop('useFactory'),  p => new Resolvable(token(p), p.useFactory, (p.deps || p.dependencies), p.policy)],
-    [prop('useClass'),    p => new Resolvable(token(p), () => new (<any>p.useClass)(), [], p.policy)],
-    [prop('useValue'),    p => new Resolvable(token(p), () => p.useValue, [], p.policy, p.useValue)],
-    [prop('useExisting'), p => new Resolvable(token(p), identity, [p.useExisting], p.policy)],
+    [o => o && o.resolveFn,   p => new Resolvable(token(p), p.resolveFn, p.deps, p.policy)],
+    [o => o && o.useFactory,  p => new Resolvable(token(p), p.useFactory, (p.deps || p.dependencies), p.policy)],
+    [o => o && o.useClass,    p => new Resolvable(token(p), () => new (<any>p.useClass)(), [], p.policy)],
+    [o => o && o.useValue,    p => new Resolvable(token(p), () => p.useValue, [], p.policy, p.useValue)],
+    [o => o && o.useExisting, p => new Resolvable(token(p), identity, [p.useExisting], p.policy)],
   ]);
 
   const tuple2Resolvable = pattern([
-    [pipe(prop("val"), isString),   (tuple: Tuple) => new Resolvable(tuple.token, identity, [ tuple.val ], tuple.policy)],
-    [pipe(prop("val"), isArray),    (tuple: Tuple) => new Resolvable(tuple.token, tail(<any[]> tuple.val), tuple.val.slice(0, -1), tuple.policy)],
-    [pipe(prop("val"), isFunction), (tuple: Tuple) => new Resolvable(tuple.token, tuple.val, annotate(tuple.val), tuple.policy)],
+    [pipe(o => o && o.val, isString),   (tuple: Tuple) => new Resolvable(tuple.token, identity, [ tuple.val ], tuple.policy)],
+    [pipe(o => o && o.val, isArray),    (tuple: Tuple) => new Resolvable(tuple.token, tail(<any[]> tuple.val), tuple.val.slice(0, -1), tuple.policy)],
+    [pipe(o => o && o.val, isFunction), (tuple: Tuple) => new Resolvable(tuple.token, tuple.val, annotate(tuple.val), tuple.policy)],
   ]);
 
   const item2Resolvable = <(obj: any) => Resolvable> pattern([

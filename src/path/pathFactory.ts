@@ -26,7 +26,7 @@ export class PathUtils {
   /** Given a PathNode[], create an TargetState */
   static makeTargetState(path: PathNode[]): TargetState {
     let state = tail(path).state;
-    return new TargetState(state, state, path.map(prop("paramValues")).reduce(mergeR, {}));
+    return new TargetState(state, state, path.map(o => o && o.paramValues).reduce(mergeR, {}));
   }
 
   static buildPath(targetState: TargetState) {
@@ -78,7 +78,7 @@ export class PathUtils {
     let noInherit = fromPath.map(node => node.paramSchema)
         .reduce(unnestR, [])
         .filter(param => !param.inherit)
-        .map(prop('id'));
+        .map(o => o && o.id);
 
     /**
      * Given an [[PathNode]] "toNode", return a new [[PathNode]] with param values inherited from the

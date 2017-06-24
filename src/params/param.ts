@@ -70,7 +70,7 @@ function getReplace(config: ParamDeclaration, arrayMode: boolean, isOptional: bo
   ];
   replace = isArray(config.replace) ? config.replace : [];
   if (isString(squash)) replace.push({ from: squash, to: undefined });
-  configuredKeys = map(replace, prop("from"));
+  configuredKeys = map(replace, (o: any) => o && o.from);
   return filter(defaultPolicy, item => configuredKeys.indexOf(item.from) === -1).concat(replace);
 }
 

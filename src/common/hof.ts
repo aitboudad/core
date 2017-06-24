@@ -95,7 +95,7 @@ export function pipe(...funcs: Function[]): (obj: any) => any {
 /**
  * Given a property name, returns a function that returns that property from an object
  * let obj = { foo: 1, name: "blarg" };
- * let getName = prop("name");
+ * let getName = o => o && o.name;
  * getName(obj) === "blarg"
  */
 export const prop = (name: string) =>
@@ -113,9 +113,9 @@ export const propEq = curry((name: string, val: any, obj: any) => obj && obj[nam
 /**
  * Given a dotted property name, returns a function that returns a nested property from an object, or undefined
  * let obj = { id: 1, nestedObj: { foo: 1, name: "blarg" }, };
- * let getName = prop("nestedObj.name");
+ * let getName = o => o && o.nestedObj.name;
  * getName(obj) === "blarg"
- * let propNotFound = prop("this.property.doesnt.exist");
+ * let propNotFound = o => o && o.this.property.doesnt.exist;
  * propNotFound(obj) === undefined
  */
 export const parse = (name: string) =>

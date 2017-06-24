@@ -27,6 +27,18 @@ import { ParamTypeDefinition } from "./interface";
  * - [[json]]
  * - [[any]]
  */
+export declare interface IParamTypes {
+  string?: ParamTypeDefinition;
+  path?: ParamTypeDefinition;
+  query?: ParamTypeDefinition;
+  hash?: ParamTypeDefinition;
+  int?: ParamTypeDefinition;
+  bool?: ParamTypeDefinition;
+  date?: ParamTypeDefinition;
+  json?: ParamTypeDefinition;
+  any?: ParamTypeDefinition;
+}
+
 export class ParamTypes {
   /** @hidden */
   types: any;

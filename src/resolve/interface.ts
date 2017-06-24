@@ -39,7 +39,7 @@ export interface ProviderLike {
  * }
  * ```
  */
-export interface ResolvableLiteral {
+export declare interface ResolvableLiteral {
   /**
    * A Dependency Injection token
    *

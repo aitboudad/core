@@ -20,7 +20,7 @@ import {ParamType} from "./paramType";
  *
  * @coreapi
  */
-export interface RawParams {
+export declare interface RawParams {
   [key: string]: any;
 }
 
@@ -59,7 +59,7 @@ export type ParamsOrArray = (RawParams|RawParams[]);
  * ```
  * @coreapi
  */
-export interface ParamDeclaration {
+export declare interface ParamDeclaration {
   /**
    * The default value for this parameter.
    *
@@ -355,7 +355,7 @@ export interface ParamDeclaration {
 }
 
 /** @internalapi */
-export interface Replace {
+export declare interface Replace {
   from: string;
   to: string;
 }
@@ -469,7 +469,7 @@ export interface Replace {
  * See: [[UrlConfigApi.type]]
  * @coreapi
  */
-export interface ParamTypeDefinition {
+export declare interface ParamTypeDefinition {
   /**
    * Tests if some object type is compatible with this parameter type
    * 
