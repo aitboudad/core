@@ -59,7 +59,7 @@ export abstract class BaseLocationServices implements LocationServices, Disposab
       this._set(null, null, url, replace);
 
       if (this.fireAfterUpdate) {
-        let evt = extend(new Event("locationchange"), { url });
+        let evt = extend(new CustomEvent("locationchange"), { url });
         this._listeners.forEach(cb => cb(evt));
       }
     }
